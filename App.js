@@ -1,4 +1,4 @@
-import {Image, TouchableOpacity} from 'react-native'
+import {Image} from 'react-native'
 import { MD3LightTheme, Provider as PaperProvider } from 'react-native-paper';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Register from './screens/Register';
