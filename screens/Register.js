@@ -11,6 +11,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { useState } from 'react';
 import Snackbar from "react-native-snackbar"
 import tailwind from 'twrnc';
+import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 
 export default Register = ({navigation}) => {
   const theme = useTheme();
@@ -26,13 +27,13 @@ export default Register = ({navigation}) => {
         <View style={tailwind`bg-pink-200`}>
           <View style={tailwind`h-1/3 `}>
             <Image source={require('../screens/pictures/logo.jpg')}
-              style={tailwind`max-h-full max-w-full  rounded-full`}></Image>
+              style={[tailwind``,{resizeMode: "cover", width: responsiveWidth(100)}]}></Image>
 
             
           </View>
           <ScrollView style={tailwind`h-2/3 `}>
           <Text style={tailwind`text-center text-2xl font-mono font-extrabold text-sky-900
-                                  underline pb-0 `}>REGISTRATION FORM</Text>
+                                  underline pb-0 dark:text-white `}>REGISTRATION FORM</Text>
             <Formik
               validationSchema={loginValidationSchema}
               initialValues={{
@@ -75,7 +76,7 @@ export default Register = ({navigation}) => {
                       onChangeText={handleChange('username')}
                       value={values.username}
                       underlineColor='transparent'
-                      style={tailwind`mt-2 mx-5 mb-0 rounded-b-2xl rounded-t-2xl text-center`}
+                      style={tailwind`mt-2 mx-5 mb-0 rounded-b-2xl dark:text-white rounded-t-2xl text-center`}
                     />
                     {errors.username &&
                       <Text style={styles.error}>{errors.username}</Text>
@@ -158,7 +159,7 @@ export default Register = ({navigation}) => {
                           onPress={() => {
                             setAgree(true)
                           }}/>
-                      <Text  style={tailwind`font-bold text-sm`}>I agree to terms and conditions</Text>
+                      <Text style={tailwind`font-bold text-sm text-black`}>I agree to terms and conditions</Text>
                     </View>  
                     
                     <View>

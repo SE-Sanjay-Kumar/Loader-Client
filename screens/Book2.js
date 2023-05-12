@@ -3,12 +3,13 @@ import {View, StyleSheet, Image} from 'react-native'
 import { TextInput, Button, Text, Appbar } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import tailwind from "twrnc";
+import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 
 export default Book2 = ({navigation}) =>{
     return(
         <View style={tailwind`bg-white`}>
             <View style={tailwind`h-1/2`}>
-                <Image  style={tailwind`h-full w-full`}
+                <Image  style={[tailwind``,{resizeMode: "cover", width: responsiveWidth(100), height: responsiveHeight(50)}]}
                  source={require('../screens/pictures/schedule.png')}/>
             
             </View>

@@ -3,12 +3,13 @@ import {View, StyleSheet, Image, ScrollView} from 'react-native'
 import { TextInput, Button, Text, Appbar } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import tailwind from "twrnc";
+import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 
 export default Book3 = ({navigation}) =>{
     return(
         <View>
             <View style={tailwind`h-1/2`}>
-                <Image style={{width:400 , height:400}} 
+                <Image style={{resizeMode: "contain", width: responsiveWidth(100), height: responsiveHeight(50)}} 
                 source={require('./pictures/map.png')} />
             </View>
 

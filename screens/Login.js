@@ -1,17 +1,15 @@
 import { View, StyleSheet, TouchableOpacity, Image} from 'react-native'
 import { TextInput, Button, Text, Appbar } from 'react-native-paper';
 import { Formik } from 'formik';
-// import { useTheme } from 'react-native-paper';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp, widthPercentageToDP } from 'react-native-responsive-screen';
 import HideKeyboard from '../components/HideKeyboard';
 import * as yup from 'yup';
-import TopBar from '../components/TopBar';
-import BottomBar from '../components/BottomBar';
+import i18next from 'i18next';
+import { I18nextProvider } from 'react-i18next';
 import Snackbar from "react-native-snackbar"
 import { useState } from 'react';
 import tailwind from 'twrnc';
-import { SafeAreaView } from 'react-native-safe-area-context';
-
+import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 
 export default Login = ({ navigation }) => {
   // const theme = useTheme();
@@ -23,14 +21,14 @@ export default Login = ({ navigation }) => {
     navigation.navigate('Home')
   }
   const [visible, setVisible] = useState(false);
-
+  // [tailwind` rounded-full r max-h-full max-w-full `]
   const onDismissSnackBar = () => setVisible(false);
   return (
     <HideKeyboard>
       <View style={tailwind`bg-pink-200`}>
         <View style={tailwind`h-1/2 `}>
           <Image source={require('../screens/pictures/logo.jpg')}
-            style={tailwind` rounded-full r max-h-full max-w-full `}></Image>
+            style={[tailwind``,{resizeMode: "cover", width: responsiveWidth(100)}]}></Image>
         </View>
         <View style={tailwind`h-1/2 bg-violet-500 rounded-t-3xl`}>
           <Formik
@@ -97,7 +95,7 @@ export default Login = ({ navigation }) => {
                         onPress={gotoHome}
                         disabled={!isValid}
                       ><Text style={tailwind`font-bold`}>Log In</Text></Button>
-                      <Text style={tailwind`font-semibold text-gray-500 text-center my-5`}>Don't have an account?</Text>
+                      <Text style={tailwind`font-semibold text-white text-center my-5`}>Don't have an account?</Text>
                       <Button
                         style={tailwind` mx-15 bg-amber-400 text-black`}
                         mode='contained'
