@@ -62,7 +62,7 @@ const App = () => {
               ? { backgroundColor: 'black' }
               : { backgroundColor: 'white' }]} >
 
-            <Drawer.Navigator drawerContent={props=>{
+            <Drawer.Navigator initialRouteName="Home" drawerContent={props=>{
                       return (
                         <DrawerContentScrollView {...props}>
                           <DrawerItemList {...props} />
@@ -82,6 +82,7 @@ const App = () => {
                         </DrawerContentScrollView>
                       )
                     }} 
+                    
               screenOptions={{
               drawerStyle: { backgroundColor: '#c4b5fd' },
               drawerPosition: 'left',
