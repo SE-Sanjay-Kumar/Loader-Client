@@ -8,22 +8,14 @@ import * as yup from 'yup';
 import TopBar from '../components/TopBar';
 import BottomBar from '../components/BottomBar';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-<<<<<<< HEAD
 import React, { useState } from 'react';
 import Snackbar from "react-native-snackbar"
 import tailwind from 'twrnc';
 import { register } from '../src/services/client_service';
-=======
-import { useState } from 'react';
-import Snackbar from "react-native-snackbar"
-import tailwind from 'twrnc';
-import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
->>>>>>> c472c8e5cd6e5583721499c71ce139e8faafcd0f
 
 export default Register = ({navigation}) => {
   const theme = useTheme();
   const styles = useStyles(theme);
-<<<<<<< HEAD
   const initialFormState = {
     username: '',
     password: '',
@@ -112,12 +104,6 @@ export default Register = ({navigation}) => {
 
 }
 
-=======
-  const goBack =()=>{
-    navigation.navigate('Login');
-  }
-  const [agree, setAgree] = useState(false);
->>>>>>> c472c8e5cd6e5583721499c71ce139e8faafcd0f
   return (
     <HideKeyboard>
       <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
@@ -125,43 +111,24 @@ export default Register = ({navigation}) => {
         <View style={tailwind`bg-pink-200`}>
           <View style={tailwind`h-1/3 `}>
             <Image source={require('../screens/pictures/logo.jpg')}
-<<<<<<< HEAD
               style={tailwind`max-h-full max-w-full  rounded-full`}></Image>
-=======
-              style={[tailwind``,{resizeMode: "cover", width: responsiveWidth(100)}]}></Image>
->>>>>>> c472c8e5cd6e5583721499c71ce139e8faafcd0f
 
             
           </View>
           <ScrollView style={tailwind`h-2/3 `}>
           <Text style={tailwind`text-center text-2xl font-mono font-extrabold text-sky-900
-<<<<<<< HEAD
                                   underline pb-0 `}>REGISTRATION FORM</Text>
-=======
-                                  underline pb-0 dark:text-white `}>REGISTRATION FORM</Text>
->>>>>>> c472c8e5cd6e5583721499c71ce139e8faafcd0f
             <Formik
               validationSchema={loginValidationSchema}
               initialValues={{
                 username: '',
-<<<<<<< HEAD
                 password: '',
                 confirmpassword: '',
                 cnic: '',
-=======
-                email: '',
-                password: '',
-                cnic: '',
-                confirmpassword: '',
->>>>>>> c472c8e5cd6e5583721499c71ce139e8faafcd0f
                 companyName: '',
                 phonenumber: '',
               }}
               onSubmit={(values, actions) => {
-<<<<<<< HEAD
-
-=======
->>>>>>> c472c8e5cd6e5583721499c71ce139e8faafcd0f
                 actions.resetForm();
                 Snackbar.show({
                   text: 'Registered',
@@ -172,11 +139,7 @@ export default Register = ({navigation}) => {
                     onPress: () => { /* Do something. */ },
                   },
                 });
-<<<<<<< HEAD
                 
-=======
-                console.log(values);
->>>>>>> c472c8e5cd6e5583721499c71ce139e8faafcd0f
               }}
             >
               {
@@ -196,30 +159,12 @@ export default Register = ({navigation}) => {
                       onChangeText={handleChange('username')}
                       value={values.username}
                       underlineColor='transparent'
-<<<<<<< HEAD
                       style={tailwind`mt-2 mx-5 mb-0 rounded-b-2xl rounded-t-2xl text-center`}
-=======
-                      style={tailwind`mt-2 mx-5 mb-0 rounded-b-2xl dark:text-white rounded-t-2xl text-center`}
->>>>>>> c472c8e5cd6e5583721499c71ce139e8faafcd0f
                     />
                     {errors.username &&
                       <Text style={styles.error}>{errors.username}</Text>
                     }
                     <TextInput
-<<<<<<< HEAD
-=======
-                      placeholder='logan@abc.com'
-                      // label='Enter Email'
-                      onChangeText={handleChange('email')}
-                      value={values.email}
-                      underlineColor='transparent'
-                      style={tailwind`mt-2 mx-5 mb-0 rounded-b-2xl rounded-t-2xl text-center`}
-                    />
-                    {errors.email &&
-                      <Text style={styles.error}>{errors.email}</Text>
-                    }
-                    <TextInput
->>>>>>> c472c8e5cd6e5583721499c71ce139e8faafcd0f
                       style={tailwind`mt-2 mx-5 mb-0 rounded-b-2xl rounded-t-2xl text-center`}
                       // label='Enter Password'
                       placeholder='Password'
@@ -286,11 +231,7 @@ export default Register = ({navigation}) => {
                           onPress={() => {
                             setAgree(true)
                           }}/>
-<<<<<<< HEAD
                       <Text  style={tailwind`font-bold text-sm`}>I agree to terms and conditions</Text>
-=======
-                      <Text style={tailwind`font-bold text-sm text-black`}>I agree to terms and conditions</Text>
->>>>>>> c472c8e5cd6e5583721499c71ce139e8faafcd0f
                     </View>  
                     
                     <View>
@@ -298,11 +239,7 @@ export default Register = ({navigation}) => {
                         textColor='black'
                         style={tailwind`mx-20 bg-amber-400 mb-10`}
                         mode='contained'
-<<<<<<< HEAD
                         onPress={() => {registerFunc(values)}}
-=======
-                        onPress={goBack}
->>>>>>> c472c8e5cd6e5583721499c71ce139e8faafcd0f
                         disabled={!isValid}
                       >
                         <Text style={tailwind`text-center font-bold`}>Register</Text>
@@ -349,11 +286,7 @@ const loginValidationSchema = yup.object().shape({
     
     // .matches(/(03)(\d){11}\b/, 'Enter a valid phone number')
     // .required('Phone number is required'),
-<<<<<<< HEAD
   cnic: yup.string().min(13, ({ min }) => `CNIC must be at least ${min} characters`)
-=======
-  cnic: yup.string().min(14, ({ min }) => `CNIC must be at least ${min} characters`)
->>>>>>> c472c8e5cd6e5583721499c71ce139e8faafcd0f
     .required('CNIC is required'),
   password: yup
     .string()
@@ -367,9 +300,5 @@ const loginValidationSchema = yup.object().shape({
     .string()
     .oneOf([yup.ref('password')], 'Passwords do not match')
     .required('Confirm password is required'),
-<<<<<<< HEAD
-=======
-  email: yup.string().email("please enter valid email").required("Email address is required"),
->>>>>>> c472c8e5cd6e5583721499c71ce139e8faafcd0f
   companyName: yup.string().required("company name is required")
 })

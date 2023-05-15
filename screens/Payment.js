@@ -20,11 +20,7 @@ export default function Payment(navigation) {
         onPress={() => {
           setAgree(false)
         }}/>
-<<<<<<< HEAD
         <Text>Cash On Delivery</Text></View>
-=======
-        <Text style={tailwind`text-black`}>Cash On Delivery</Text></View>
->>>>>>> c472c8e5cd6e5583721499c71ce139e8faafcd0f
       <View style={tailwind`flex-row items-center`}>
         <RadioButton
         value={false}
@@ -34,11 +30,7 @@ export default function Payment(navigation) {
           
         }}
         />
-<<<<<<< HEAD
         <Text>Online Payment</Text>
-=======
-        <Text style={tailwind`text-black`}>Online Payment</Text>
->>>>>>> c472c8e5cd6e5583721499c71ce139e8faafcd0f
         
         
       </View>

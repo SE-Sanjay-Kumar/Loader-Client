@@ -8,7 +8,8 @@ import { getAllOrder, getVehicleType, placeOrder } from "../src/services/client_
 export default Book2 = ({navigation}) =>{
     
     const route=useRoute();
-    const [orderDetails,setOrderDetails]=React.useState(route.params.data);
+    const [orderDetails,setOrderDetails]=React.useState(route.params.order);
+    console.log("From Order Details: "+orderDetails);
     const [allOrders,setAllOrders]=React.useState([]);
     const [price,setPrice]=React.useState(0);
     console.log(orderDetails)
@@ -39,6 +40,8 @@ export default Book2 = ({navigation}) =>{
             }
                     getAllOrder().then((response)=>{
                         setAllOrders(response.data);
+                        console.log(response.data);
+                        
             })
             .catch((err)=>{
                 if(err.response){

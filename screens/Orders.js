@@ -4,11 +4,18 @@ import { TextInput, Button, Text, Appbar, DataTable } from 'react-native-paper';
 import tailwind from "twrnc";
 import { getAllOrder } from "../src/services/client_service";
 import { useRoute } from "@react-navigation/native";
-export default Orders = () =>{
+export default Orders = ({navigation}) =>{
     const route=useRoute();
     const id=global.id;
     const [allOrders,setAllOrders]=React.useState([]);
     
+    const updatePrice=(order)=>{
+        order.id=id;
+        console.log(order);
+        navigation.navigate('Page 4',{
+            order: order});
+    }
+
     React.useEffect(()=>{
             getAllOrder().then((response)=>{
                         setAllOrders(response.data);
@@ -42,17 +49,16 @@ export default Orders = () =>{
                 {allOrders.map((order, index) => (
                     (order.client.id==id) ? (
                     <DataTable.Row key={index}>
-                        <DataTable.Cell>{order.orderid}</DataTable.Cell>
+                        <DataTable.Cell>{order.orderId}</DataTable.Cell>
                         <DataTable.Cell>{order.orderName}</DataTable.Cell>
                         <DataTable.Cell>{order.status.status}</DataTable.Cell>
-                        {order.status.statusId!=1 ? (
-                            <Button mode="outlined"style={{marginLeft:10,}} onPress={() => navigation.navigate('TrackOrders',{
+                        {order.status.statusId==1 ? (
+                            <Button mode="outlined" style={{marginLeft:10}} onPress={() => navigation.navigate('TrackOrders',{
                             order: order,})}>
                             <Text>Track Order</Text>                            
                         </Button>):null}
                         {order.status.statusId==2 ? (
-                            <Button mode="outlined"style={{marginLeft:10,}} onPress={() => navigation.navigate('Page 4',{
-                            order: order,})}>
+                            <Button mode="outlined" style={{marginLeft:10}} onPress={() => {updatePrice(order)}}>
                             <Text>Update Price</Text>                            
                         </Button>):null}
 

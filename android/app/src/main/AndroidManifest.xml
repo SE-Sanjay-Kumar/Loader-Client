@@ -2,10 +2,7 @@
   package="com.project">
 
     <uses-permission android:name="android.permission.INTERNET" />
-<<<<<<< HEAD
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-=======
->>>>>>> c472c8e5cd6e5583721499c71ce139e8faafcd0f
 
     <application
       android:name=".MainApplication"
@@ -26,14 +23,11 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
       </activity>
-<<<<<<< HEAD
 
       <!-- Add the Google Maps API key -->
       <meta-data
           android:name="com.google.android.geo.API_KEY"
           android:value="AIzaSyCU18_3ekW7y7z7qVYjg-FoTQ56hUIyPxE" />
 
-=======
->>>>>>> c472c8e5cd6e5583721499c71ce139e8faafcd0f
     </application>
 </manifest>

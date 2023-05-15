@@ -3,10 +3,6 @@ import {View, StyleSheet} from 'react-native'
 import { TextInput, Button, Text} from 'react-native-paper';
 import Snackbar from "react-native-snackbar";
 import tailwind from "twrnc";
-<<<<<<< HEAD
-=======
-import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
->>>>>>> c472c8e5cd6e5583721499c71ce139e8faafcd0f
 
 
 export default Review = () =>{
