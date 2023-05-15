@@ -62,7 +62,7 @@ const App = () => {
               ? { backgroundColor: 'black' }
               : { backgroundColor: 'white' }]} >
 
-            <Drawer.Navigator initialRouteName="Home" drawerContent={props=>{
+            <Drawer.Navigator initialRouteName="Login" drawerContent={props=>{
                       return (
                         <DrawerContentScrollView {...props}>
                           <DrawerItemList {...props} />
