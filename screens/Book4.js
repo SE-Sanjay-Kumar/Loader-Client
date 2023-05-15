@@ -8,11 +8,9 @@ import { getAllOrder, getVehicleType, placeOrder } from "../src/services/client_
 export default Book2 = ({navigation}) =>{
     
     const route=useRoute();
-    const [orderDetails,setOrderDetails]=React.useState(route.params.order);
-    console.log("From Order Details: "+orderDetails);
+    const [orderDetails,setOrderDetails]=React.useState(route.params.data);
     const [allOrders,setAllOrders]=React.useState([]);
     const [price,setPrice]=React.useState(0);
-    console.log(orderDetails)
     const Price=(value)=>{
         const val= parseInt(value);
         setPrice(val);
@@ -36,7 +34,24 @@ export default Book2 = ({navigation}) =>{
 
     React.useEffect(()=>{
             calculatePrice=()=>{
-                
+                const lon1=orderDetails.pickuplongitude;
+                const lat1=orderDetails.pickuplatitude;
+                const lon2=orderDetails.dropOffLongitude;
+                const lat2=orderDetails.dropOffLatitude;
+
+                console.log(lat1, lon1+"==="+lat2, lon2);
+                const R = 6371  // km;
+                const x1 = lat2 - lat1;
+                const dLat = toRadian(x1);
+                const x2 = lon2 - lon1;
+                const dLon = toRadian(x2);
+                const a =
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(toRadian(lat1)) * Math.cos(toRadian(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                const d = R * c;
+                console.log("distance==?",d);
+
             }
                     getAllOrder().then((response)=>{
                         setAllOrders(response.data);

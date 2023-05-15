@@ -32,15 +32,16 @@ import Payment from './screens/Payment';
 
 // const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
-export const mainid=createContext({});
+
 const App = () => {
   return (
     // theme={theme}
+    
     <PaperProvider >  
       <SafeAreaProvider>
         <SafeAreaView style={{ flex: 1 }}>
           <NavigationContainer style={tailwind`bg-violet-300`} >
-
+            
             <Drawer.Navigator
             initialParams={{ id: '5' }} 
             screenOptions={{
@@ -51,7 +52,8 @@ const App = () => {
               fontWeight: 'bold'
               }}>
               <Drawer.Screen name="Login" component={Login} options={{
-                  drawerItemStyle: { height: 0 }
+                  drawerItemStyle: { height: 0 },drawerLockMode: 'locked-closed',gestureEnabled: false,
+                  swipeEnabled: false,
                   }}/>
               <Drawer.Screen name='Home' component={Book1} />
               <Drawer.Screen name="View Profile" component={ViewProfile} />

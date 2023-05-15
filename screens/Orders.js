@@ -13,7 +13,7 @@ export default Orders = ({navigation}) =>{
         order.id=id;
         console.log(order);
         navigation.navigate('Page 4',{
-            order: order});
+            data: order});
     }
 
     React.useEffect(()=>{
