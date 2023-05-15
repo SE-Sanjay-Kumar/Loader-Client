@@ -1,54 +1,65 @@
 import React from "react";
 import {View, StyleSheet, Image, FlatList, TouchableOpacity} from 'react-native'
-import { TextInput, Button, Text, Appbar } from 'react-native-paper';
-import { NavigationContainer } from '@react-navigation/native';
+import { TextInput, Button, Text, Appbar, DataTable } from 'react-native-paper';
+import { NavigationContainer, useRoute } from '@react-navigation/native';
 import tailwind from "twrnc";
-
+import { getAllOrder, getVehicleType, placeOrder } from "../src/services/client_service";
 
 export default Book2 = ({navigation}) =>{
-    const data = [
-        {
-            id: "truck1",
-            title: "Truck 1",
-            image: require('../screens/pictures/icon.png'),
-            price: "$2"
-        },
-        {
-            id: "truck2",
-            title: "Truck 2",
-            image: require('../screens/pictures/icon.png'),
-            price: "$4"
-        },
-        {
-            id: "truck3",
-            title: "Truck 3",
-            image: require('../screens/pictures/icon.png'),
-            price: "$6"
-        },
-        {
-            id: "truck4",
-            title: "Truck 4",
-            image: require('../screens/pictures/icon.png'),
-            price: "$8"
-        }
-    ]
+    
+    const route=useRoute();
+    const [orderDetails,setOrderDetails]=React.useState(route.params.data);
+    const [allOrders,setAllOrders]=React.useState([]);
+    const [price,setPrice]=React.useState(0);
+    console.log(orderDetails)
+    const Price=(value)=>{
+        const val= parseInt(value);
+        setPrice(val);
+        orderDetails.price=price;
+        placeOrder(orderDetails).then((response)=>{
+            console.log("From Order"+response);
+        })
+        .catch((err)=>{
+            if(err.response){
+                console.log(er.response);
+            }
+            else if(err.request){
+                console.log(err.request);
+            }
+            else {
+                console.log(err);
+            }
+        });
+        
+    }
+
+    React.useEffect(()=>{
+            calculatePrice=()=>{
+                
+            }
+                    getAllOrder().then((response)=>{
+                        setAllOrders(response.data);
+            })
+            .catch((err)=>{
+                if(err.response){
+                    console.log(er.response);
+                }
+                else if(err.request){
+                    console.log(err.request);
+                }
+                else {
+                    console.log(err);
+                }
+            })    
+    },[]);
+
     return(
         <View>
             <View style={tailwind`h-1/2`}>
-                <Image style={{width:400 , height:400}} 
-                source={require('./pictures/map.png')} />
+                <Text>Final Order Screen</Text>
             </View>
             <View style={tailwind`h-1/2 bg-violet-200 rounded-t-3xl`}>
-                <Text style={tailwind`text-lg font-bold text-center`}>Select a Vehicle</Text>
-                <FlatList horizontal style={tailwind``}
-                    data={data} keyExtractor={(item) => item.id} 
-                    renderItem={({item: {id, title, image, price}})=>(
-                        <TouchableOpacity style={tailwind`flex-col items-center h-20 `}>
-                            <Image style={tailwind`w-20 h-20 mx-10`} source={image}></Image>
-                            <Text style={tailwind``}>{title}</Text>
-                            <Text style={tailwind``}>{price}</Text>
-                        </TouchableOpacity>
-                    )}/>
+                
                 <Text style={tailwind`text-lg font-bold text-center`}>Fare</Text>
                 <TextInput
                       style={tailwind`mb-10 mx-5 mb-0 rounded-b-2xl rounded-t-2xl text-center `}
@@ -56,14 +67,24 @@ export default Book2 = ({navigation}) =>{
                       placeholder='Price Suggestion'
                       underlineColor='transparent'
                       keyboardType='number-pad'
+                      onChangeText={value => setPrice(value)}
                     />
+
                 <View style={tailwind`flex-row `}>
                 <Button style={tailwind` bg-amber-400 text-black mt-2 mx-10`}  mode="contained" 
-                    onPress={()=>{}}>
+                    onPress={()=>{Price(price)}}>
                     <Text>Update Price</Text></Button>
-                <Button style={tailwind`  bg-amber-400 text-black mt-2 mx-10`}  mode="contained" 
-                    onPress={()=>{navigation.navigate('Page 5')}}>
-                    <Text>Accept</Text></Button>
+                {
+                    allOrders.map((order,index)=>(
+                        ((order.client.id==orderDetails.id)&&(order.status.statusId=='2')) ? (
+                            <Button style={tailwind`  bg-amber-400 text-black mt-2 mx-10`}  mode="contained" 
+                                onPress={()=>{navigation.navigate('Page 5')}}>
+                                <Text>Accept</Text></Button>
+
+                        ): null
+                    )
+                    )
+                }
                 </View>
             </View>
             

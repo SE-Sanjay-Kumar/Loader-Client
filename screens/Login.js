@@ -12,7 +12,7 @@ import { useState } from 'react';
 import tailwind from 'twrnc';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { login } from '../src/services/client_service';
-
+import { mainid } from '../App';
 
 export default Login = ({ navigation }) => {
   // const theme = useTheme();
@@ -31,6 +31,9 @@ export default Login = ({ navigation }) => {
             onPress: () => { /* Do something. */ },
           },
         });
+
+        global.id=response.data.id;
+        console.log(response.data.id);
         navigation.navigate('Home',{
           id: response.data.id,
         });
@@ -180,6 +183,6 @@ const styles = () => (StyleSheet.create({
 
 const loginValidationSchema = yup.object().shape({
   username: yup.string().required('User name is Required'),
-  password: yup.string().min(6, ({ min }) => 'Password must be at least ${min} characters').required('Password is required')
+  password: yup.string().min(1, ({ min }) => `Password must be at least ${min} characters`).required('Password is required')
 
 })

@@ -1,4 +1,5 @@
-import {Image} from 'react-native'
+import {Image} from 'react-native';
+import { createContext } from 'react';
 import { MD3LightTheme, Provider as PaperProvider } from 'react-native-paper';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Register from './screens/Register';
@@ -31,8 +32,8 @@ import Payment from './screens/Payment';
 
 // const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
+export const mainid=createContext({});
 const App = () => {
-
   return (
     // theme={theme}
     <PaperProvider >  
@@ -40,7 +41,9 @@ const App = () => {
         <SafeAreaView style={{ flex: 1 }}>
           <NavigationContainer style={tailwind`bg-violet-300`} >
 
-            <Drawer.Navigator screenOptions={{
+            <Drawer.Navigator
+            initialParams={{ id: '5' }} 
+            screenOptions={{
               drawerStyle: { backgroundColor: '#c4b5fd' },
               drawerPosition: 'left',
               headerStyle: {backgroundColor: '#d9b3ff'},
