@@ -18,14 +18,14 @@ export const register=async (userDetail)=>{
 export const login=async (userDetail)=>{
     const userDetailsString = JSON.stringify(userDetail);
     const userDetails = JSON.parse(userDetailsString);
-    const data={
-        "userName": "SyedMubarak",
-        "password":"Syed!123",
-    };
     // const data={
-    //     "userName": userDetails.username,
-    //     "password":userDetails.password,
+    //     "userName": "SyedMubarak",
+    //     "password":"Syed!123",
     // };
+    const data={
+        "userName": userDetails.username,
+        "password":userDetails.password,
+    };
     const response = await myAxios.post('api/client/login',data);
     return response;
 }
@@ -50,17 +50,105 @@ export const updateUser=async (data)=>{
 }
 
 export const addReview=async (data)=>{
+    console.log(data);
     const Data={
-
+        "rating": data.rating,
+        "comment": data.comment,
+        "reviewDate": null,
+        "order": {
+            "orderId": data.orderId,
+            "orderName": null,
+            "noOfLabors": 0,
+            "totalWeight": 12.0,
+            "totalSize": 1.0,
+            "fragility": false,
+            "price": 15.0,
+            "status": {
+                "statusId": 3,
+                "status": "pending"
+            },
+            "client": {
+                "id": data.client.id,
+                "userName": "SyedMubarak",
+                "password": "Syed!123",
+                "phoneNumber": "03043737019",
+                "cnic": 4510287726477,
+                "companyName": "Jil"
+            },
+            "driver": {
+                "id": data.driver.id,
+                "userName": "driver_1",
+                "password": "driver1pass",
+                "phoneNumber": "034393443443",
+                "cnic": 441098565045,
+                "licenseNumber": "441098565645-455",
+                "yearsOfExperience": 6,
+                "salary": 6000,
+                "foodCost": 500,
+                "status": {
+                    "statusId": 1,
+                    "status": "busy"
+                },
+                "vehicle": {
+                    "vehicleId": 2,
+                    "name": "giant container",
+                    "maxWeightCarry": 454,
+                    "minWeightCarry": null,
+                    "maxSizeCarry": null,
+                    "mileage": 56.0,
+                    "plateNo": "API-108",
+                    "cost": {
+                        "maintenanceCost": 3434.6,
+                        "fuelCost": 534.0
+                    },
+                    "vtype": {
+                        "typeId": 2,
+                        "typeName": "bulk",
+                        "cost": null
+                    },
+                    "status": {
+                        "statusId": 4,
+                        "status": "assigned"
+                    }
+                }
+            },
+            "payment": {
+                "paymentId": data.payment.paymentId,
+                "paymentMode": data.payment.paymentMode
+            },
+            "orderLocation": {
+                "pickUp": "0",
+                "dropOff": "0"
+            },
+            "orderSchedule": {
+                "schedule": "2023-05-15T07:30:33.502+00:00"
+            },
+            "estimatedArrivalOfGoods": data.estimatedArrivalOfGoods,
+            "image": null,
+            "imageName": null,
+            "imageType": null
+        },
+        "client": {
+            "id": global.id,
+            "userName": "SyedMubarak",
+            "password": "Syed!123",
+            "phoneNumber": "03043737019",
+            "cnic": 4510287726477,
+            "companyName": "Jil"
+        }
     };
-    const response=myAxios.get(`api/review/${data.orderId}/client-review`);
+    console.log("Here is the Data"+JSON.stringify(Data))
+    const response=myAxios.post(`api/review/order/${data.orderId}/client-review`,Data);
     return response
 }
 export const getReview=async (data)=>{
-    const Data={
-
-    };
-    const response=myAxios.get(`api/review/${data.orderId}`);
+   
+    const response=myAxios.get(`api/review/order/${data.orderId}/client-review`);
+    return response
+}
+export const pay=async (data)=>{
+   
+    const response=myAxios.post(`api/pay/charge/${data.id}/${data.amount}/${data.description}`);
     return response
 }
 
@@ -84,13 +172,14 @@ export const updateOrderStatus=async (Data)=> {
     const dropoff=Data.dropOffLatitude+","+Data.dropOffLongitude;
     Data.size=parseInt(Data.size);
     Data.weight=parseInt(Data.weight);
-
+    console.log(Data)
     let data={
         "orderId": Data.orderId,
         "orderName": Data.orderName,
         "noOfLabors": Data.noOfLabors,
         "totalWeight": Data.weight,
         "totalSize": Data.size,
+        "paymentStatus": Data.paymentStatus,
         "fragility": false,
         "status": {
             "statusId": Data.statusId,
@@ -167,6 +256,7 @@ export const placeOrder=async (Data) => {
         "noOfLabors": Data.labour,
         "totalWeight": Data.weight,
         "totalSize": Data.size,
+        "paymentStatus": "pending",
         "fragility": false,
         "status": {
             "statusId": 2,

@@ -13,19 +13,22 @@ export default Orders = ({navigation}) =>{
     const updatePrice=(order)=>{
         order.clientid=order.client.id;
         order.orderId=order.orderId;
-        console.log("Please see this"+order.clientid);
         order.statusId=order.status.statusId;
-        console.log("From orders"+JSON.stringify(order));
         navigation.navigate('Page 4',{
             data: order});
     }
 
     const review=(order)=>{
         order.orderId=order.orderId;
+        console.log(order);
         navigation.navigate('Review',{
             data: order});
+        }
+        const pay=(order)=>{
+        navigation.navigate('Page 5',{
+            data: order});
+        
     }
-
     React.useEffect(()=>{
             getAllOrder().then((response)=>{
                         setAllOrders(response.data);
@@ -67,7 +70,7 @@ export default Orders = ({navigation}) =>{
                             order: order,})}>
                             <Text>Track Order</Text>                            
                         </Button>):null}
-                        {order.status.statusId==2 ? (
+                        {order.status.statusId==6 ? (
                             <Button mode="outlined" style={{marginLeft:10}} onPress={() => {updatePrice(order)}}>
                             <Text>Update Price</Text>                            
                         </Button>):null}
@@ -75,6 +78,10 @@ export default Orders = ({navigation}) =>{
                         {order.status.statusId==4 ? (
                             <Button mode="outlined" style={{marginLeft:10}} onPress={() => {review(order)}}>
                             <Text>Review</Text>                            
+                        </Button>):null}
+                        {order.status.statusId==3 ? (
+                            <Button mode="outlined" style={{marginLeft:10}} onPress={() => {pay(order)}}>
+                            <Text>Pay</Text>                            
                         </Button>):null}
 
                     </DataTable.Row>) : null

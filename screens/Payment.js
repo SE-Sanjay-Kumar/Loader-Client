@@ -1,15 +1,72 @@
 import React, { useState } from "react";
 import {View, StyleSheet, Image, ScrollView} from 'react-native'
 import { TextInput, Button, Text, Appbar, RadioButton } from 'react-native-paper';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useRoute } from '@react-navigation/native';
 import tailwind from "twrnc";
 import Snackbar from "react-native-snackbar";
+import Stripe from 'react-native-stripe-api';
+import { pay, updateOrderStatus } from "../src/services/client_service";
 
 
-export default function Payment(navigation) {
+
+export default function Payment({navigation}) {
     const [agree, setAgree] = useState(true);
     const [agreeB, setAgreeB] = useState(false)
-    const [checked,IsChecked] = useState('')
+    const [checked,IsChecked] = useState('');
+    const [number,setNumber] = useState('');
+    const [exp_month,setExpMonth] = useState('');
+    const [exp_year,setExpYear] = useState('');
+    const [payment,setPayment] = useState('');
+    const [description,setDescription] = useState('');
+    const [cvc,setCvc] = useState('');
+    const route=useRoute();
+    const stripe = new Stripe('pk_test_51N7bfdKi05WvTLbhhI43mVTZ4nhd21DxVFxBVQKuh3wB8O1ED9VgFBQLQgfGXpJz8J1Rs1di55OGNxfpP64OjRz100zbpQRW8y');
+    var token="";
+    const [order,SetOrder]=React.useState(route.params.data);
+    const createToken=async()=>{
+      token = await stripe.createToken({
+        number: number,
+        exp_month: exp_month,
+        exp_year: exp_year,
+        cvc: cvc,
+      });
+      console.log(order)
+      token.amount=order.price;
+      token.description=description;
+      pay(token).then((response)=>{
+        Snackbar.show({
+            text: "Payment Succesfull.",
+            duration: Snackbar.LENGTH_SHORT,
+            action: {
+              text: 'close',
+              textColor: 'green',
+              onPress: () => { /* Do something. */ },
+            },
+          });
+          order.payment="done";
+          if(order.totalWeight!==undefined){
+            order.weight=order.totalWeight;
+        }
+        if(order.totalSize!==undefined){
+            order.size=order.totalsize;
+        }
+          updateOrderStatus(order);
+          navigation.navigate('Orders');
+              })
+          .catch((err)=>{
+              if(err.response){
+                  console.log(err.response);
+              }
+              else if(err.request){
+                  console.log(err.request);
+              }
+              else {
+                  console.log(err);
+              }
+          });
+
+    }
+    
   return (
     <View style={tailwind`bg-violet-300 h-full`}>
       <Text style={tailwind`text-center text-3xl font-extrabold m-5`}>Payment Method</Text>
@@ -40,39 +97,48 @@ export default function Payment(navigation) {
             <View>
                 <TextInput
                       style={tailwind`mt-2 mx-5 mb-0 rounded-b-2xl rounded-t-2xl text-center`}
-                      // label='Compnay Name'
-                      placeholder='Name on Card'
+                      label='Expiry Month'
+                      placeholder='Expiry Month'
                       underlineColor='transparent'
-                      
+                      keyboardType='numeric'
+                      onChangeText={(value)=>{setExpMonth(value)}}
                     />
                 <TextInput
                       style={tailwind`mt-2 mx-5 mb-0 rounded-b-2xl rounded-t-2xl text-center`}
-                      // label='Compnay Name'
+                      label='Expiry Year'
+                      placeholder='Expiry Year'
+                      keyboardType='numeric'
+                      underlineColor='transparent'
+                      onChangeText={(value)=>{setExpYear(value)}}
+                    />
+                <TextInput
+                      style={tailwind`mt-2 mx-5 mb-0 rounded-b-2xl rounded-t-2xl text-center`}
+                      label='Card Number'
                       placeholder='Card Number'
                       underlineColor='transparent'
                       keyboardType='numeric'
+                      onChangeText={(value)=>{setNumber(value)}}
                     />
                 <TextInput
                       style={tailwind`mt-2 mx-20 mb-0 rounded-b-2xl rounded-t-2xl text-center`}
-                      // label='Compnay Name'
-                      placeholder='CVV'
+                      label='CVC'
+                      placeholder='CVC'
                       underlineColor='transparent'
                       keyboardType='numeric'
+                      onChangeText={(value)=>{setCvc(value)}}
+                    />       
+                <TextInput
+                      style={tailwind`mt-2 mx-20 mb-0 rounded-b-2xl rounded-t-2xl text-center`}
+                      label='Description'
+                      placeholder='Description'
+                      underlineColor='transparent'
+                      onChangeText={(value)=>{setDescription(value)}}
                     />    
             </View>
             }
       
       <Button style={tailwind` mx-15 bg-amber-400 text-black mt-20`} mode="contained" onPress={()=>{
-                Snackbar.show({
-                    text: 'Order Booked',
-                    duration: Snackbar.LENGTH_SHORT,
-                    action: {
-                      text: 'close',
-                      textColor: 'green',
-                      onPress: () => { },
-                      
-                    },
-                  })
+                createToken();
             }}><Text style={tailwind`font-bold`}>Confirm Order</Text></Button>
     </View>
   )

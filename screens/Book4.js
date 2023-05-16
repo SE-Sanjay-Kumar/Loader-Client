@@ -11,6 +11,7 @@ export default Book2 = ({navigation}) =>{
     const route=useRoute();
     const [orderDetails,setOrderDetails]=React.useState(route.params.data);
     const [price,setPrice]=React.useState(0);
+    const [originalPrice,setOriginalPrice]=React.useState(0);
     const [vehicle,setAllVehicles]=React.useState([]);
     const [allOrders,setAllOrders]=React.useState([]);
     const [orderexist,setOrderExist]=React.useState(false);
@@ -20,6 +21,7 @@ export default Book2 = ({navigation}) =>{
     const Price=(value)=>{
         const val= parseInt(value);
         setPrice(val);
+        orderDetails.orderId=orderDetails.orderId
         orderDetails.price=val;
         orderDetails.statusId=2;
         orderDetails.status="bidding";
@@ -74,7 +76,45 @@ export default Book2 = ({navigation}) =>{
     }
     const acceptOrder=()=>{
         //update the ostatus in database
-        navigation.navigate("Page 5",{data:orderDetails});
+
+        if(orderDetails.totalWeight!==undefined){
+            orderDetails.weight=orderDetails.totalWeight;
+        }
+        if(orderDetails.totalWeight!==undefined){
+            orderDetails.size=orderDetails.totalsize;
+        }
+
+
+        orderDetails.price=orderDetails.price*orderDetails.totalWeight;
+        orderDetails.statusId=3;
+        orderDetails.status="pending";
+        orderDetails.paymentStatus="pending";
+        console.log(orderDetails);
+        console.log(orderDetails.price);
+        updateOrderStatus(orderDetails).then((response)=>{
+            Snackbar.show({
+                text: "Successfully confirmed Price.",
+                duration: Snackbar.LENGTH_SHORT,
+                action: {
+                  text: 'close',
+                  textColor: 'green',
+                  onPress: () => { /* Do something. */ },
+                },
+              });
+      
+        })
+        .catch((err)=>{
+            if(err.response){
+                console.log("D"+JSON.stringify(err.response));
+            }
+            else if(err.request){
+                console.log("De"+err.request);
+            }
+            else {
+                console.log("Deq: "+err);
+            }
+        });
+        // navigation.navigate("Page 5",{data:orderDetails});
     }
     const calculatePrice=()=>{
         let lon1="";
@@ -147,39 +187,30 @@ export default Book2 = ({navigation}) =>{
         }
 
         if(orderDetails.labour>0){
-            let p=(parseInt(orderDetails.labour)*10)+pr;
-            console.log("P"+p);
-            setPrice(p);
+            pr=(parseInt(orderDetails.labour)*10)+pr;
+            console.log("P"+pr);
         }
+        console.log(pr)
+        setPrice(pr);
         console.log("distance==?",d);
         console.log("Price==?",price);
 
     }
 
     React.useEffect(()=>{
-        getOrder(orderDetails.orderId).then((response)=>{
+        console.log("Use effect wali"+orderDetails);
+        if(orderDetails.orderId!==undefined){
+            getOrder(orderDetails.orderId).then((response)=>{
                 setOrderExist(true);
+                setOriginalPrice(orderDetails.price);
+                console.log(originalPrice);
+                console.log(price);
+                console.log(response.data);
+                console.log(orderDetails)
             })
-        .catch((err)=>{
-            if(err.response){
-                console.log(err.response);
-            }
-            else if(err.request){
-                console.log(err.request);
-            }
-            else {
-                console.log(err);
-            }
-        })    
-        getAllOrder().then((response)=>{
-                setAllOrders(response.data);
-                setPrice(orderDetails.price);
-                if(price==0)
-                    calculatePrice();
-                })
             .catch((err)=>{
                 if(err.response){
-                    console.log(er.response);
+                    console.log(err.response);
                 }
                 else if(err.request){
                     console.log(err.request);
@@ -187,9 +218,34 @@ export default Book2 = ({navigation}) =>{
                 else {
                     console.log(err);
                 }
-            })    
+            })
+        }        
+           
     },[]);
-
+    React.useEffect(()=>{
+        if(orderDetails.price===undefined){
+            console.log("inundefined")
+                calculatePrice();
+        }
+        getAllOrder().then((response)=>{
+            setAllOrders(response.data);
+            if(orderDetails.price!==undefined)
+                setPrice(orderDetails.price);
+            
+            })
+        .catch((err)=>{
+            if(err.response){
+                console.log(er.response);
+            }
+            else if(err.request){
+                console.log(err.request);
+            }
+            else {
+                console.log(err);
+            }
+        })  
+        console.log(price);
+    },[]);
     return(
         <View>
             <View style={tailwind`h-1/2`}>
@@ -218,9 +274,9 @@ export default Book2 = ({navigation}) =>{
                     
                 {
                     allOrders.map((order,index)=>(
-                        ((order.client.id==orderDetails.clientid)) ? (
+                        (orderDetails.orderId!==undefined) ? (
                             <View style={tailwind`flex-row `}>
-                                {(order.price==price&&orderDetails.statusId==3)?(
+                                {((order.orderId==orderDetails.orderId)&&originalPrice==price&&order.status.statusId==6)?(
                                     <Button style={tailwind`  bg-amber-400 text-black mt-2 mx-10`}  mode="contained" 
                                         onPress={()=>{acceptOrder()}}>
                                     <Text>Accept</Text></Button>
