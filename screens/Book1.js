@@ -15,7 +15,7 @@ export default Book1 = ({navigation}) =>{
     const [id, setClientId] = React.useState(route.params.id);
   
     const ToS2=(FormData)=>{
-        FormData.id=id;
+        FormData.clientid=id;
         navigation.navigate('Page 2',{
             data: FormData,
         })
@@ -65,6 +65,7 @@ export default Book1 = ({navigation}) =>{
                       placeholder='Weight'
                       onChangeText={handleChange('weight')}
                       value={values.weight}
+                      keyboardType='number-pad'
                       underlineColor='transparent'
                       style={tailwind`m-5 rounded-2xl rounded-t-2xl text-center`}
                     />
@@ -75,6 +76,7 @@ export default Book1 = ({navigation}) =>{
                       placeholder='Size'
                       onChangeText={handleChange('size')}
                       value={values.size}
+                      keyboardType='number-pad'
                       underlineColor='transparent'
                       style={tailwind`m-5 rounded-2xl rounded-t-2xl text-center`}
                     />

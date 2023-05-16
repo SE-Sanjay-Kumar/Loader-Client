@@ -8,11 +8,21 @@ export default Orders = ({navigation}) =>{
     const route=useRoute();
     const id=global.id;
     const [allOrders,setAllOrders]=React.useState([]);
+    const [order,setOrder]=React.useState([]);
     
     const updatePrice=(order)=>{
-        order.id=id;
-        console.log(order);
+        order.clientid=order.client.id;
+        order.orderId=order.orderId;
+        console.log("Please see this"+order.clientid);
+        order.statusId=order.status.statusId;
+        console.log("From orders"+JSON.stringify(order));
         navigation.navigate('Page 4',{
+            data: order});
+    }
+
+    const review=(order)=>{
+        order.orderId=order.orderId;
+        navigation.navigate('Review',{
             data: order});
     }
 
@@ -60,6 +70,11 @@ export default Orders = ({navigation}) =>{
                         {order.status.statusId==2 ? (
                             <Button mode="outlined" style={{marginLeft:10}} onPress={() => {updatePrice(order)}}>
                             <Text>Update Price</Text>                            
+                        </Button>):null}
+
+                        {order.status.statusId==4 ? (
+                            <Button mode="outlined" style={{marginLeft:10}} onPress={() => {review(order)}}>
+                            <Text>Review</Text>                            
                         </Button>):null}
 
                     </DataTable.Row>) : null
