@@ -88,7 +88,7 @@ export default Login = ({ navigation }) => {
       <View style={tailwind`bg-pink-200`}>
         <View style={tailwind`h-1/2 `}>
           <Image source={require('../screens/pictures/logo.jpg')}
-            style={tailwind` rounded-full r max-h-full max-w-full `}></Image>
+            style={tailwind` rounded-full max-h-full max-w-full `}></Image>
         </View>
         <View style={tailwind`h-1/2 bg-violet-500 rounded-t-3xl`}>
           <Formik

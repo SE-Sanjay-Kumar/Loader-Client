@@ -133,6 +133,7 @@ export default Book2 = ({navigation}) =>{
                     style={tailwind`mt-2 mx-5 mb-0 rounded-b-2xl rounded-t-2xl text-center`}
                     placeholder="Departure Time"
                     underlineColor='transparent'
+                    keyboardType='number-pad'
                     value={time}
                     onChangeText={setTime}
                 />            

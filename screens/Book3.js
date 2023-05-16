@@ -26,6 +26,7 @@ export default Book3 = ({navigation}) =>{
         data.dropOffLongitude=longitude;
         data.dropOffLatitude=latitude;
         data.labour=labour;
+        data.statusId='1';
         navigation.navigate('Page 4',{
             data:data,
         })
@@ -114,6 +115,7 @@ export default Book3 = ({navigation}) =>{
                     style={tailwind`mx-5 mb-2 rounded-2xl rounded-t-2xl text-center  `}
                     underlineColor='transparent'
                     placeholder="Labour Required"
+                    keyboardType='number-pad'
                     onChangeText={value => setLabour(value)}
                     />
                 <Button style={tailwind` mx-15 bg-amber-400 text-black mt-2`} mode="contained"onPress={()=>{conformDropOff()}}><Text>Next</Text></Button>
