@@ -24,46 +24,98 @@ export default function Payment({navigation}) {
     var token="";
     const [order,SetOrder]=React.useState(route.params.data);
     const createToken=async()=>{
-      token = await stripe.createToken({
-        number: number,
-        exp_month: exp_month,
-        exp_year: exp_year,
-        cvc: cvc,
-      });
-      console.log(order)
-      token.amount=order.price;
-      token.description=description;
-      pay(token).then((response)=>{
-        Snackbar.show({
-            text: "Payment Succesfull.",
-            duration: Snackbar.LENGTH_SHORT,
-            action: {
-              text: 'close',
-              textColor: 'green',
-              onPress: () => { /* Do something. */ },
-            },
-          });
-          order.payment="done";
-          if(order.totalWeight!==undefined){
-            order.weight=order.totalWeight;
-        }
-        if(order.totalSize!==undefined){
-            order.size=order.totalsize;
-        }
-          updateOrderStatus(order);
-          navigation.navigate('Orders');
-              })
-          .catch((err)=>{
-              if(err.response){
-                  console.log(err.response);
-              }
-              else if(err.request){
-                  console.log(err.request);
-              }
-              else {
-                  console.log(err);
-              }
-          });
+      if(agree===false){
+        token = await stripe.createToken({
+          number: number,
+          exp_month: exp_month,
+          exp_year: exp_year,
+          cvc: cvc,
+        });
+        console.log(order)
+        token.amount=order.price;
+        token.description=description;
+        
+        pay(token).then((response)=>{
+          Snackbar.show({
+              text: "Payment Succesfull.",
+              duration: Snackbar.LENGTH_SHORT,
+              action: {
+                text: 'close',
+                textColor: 'green',
+                onPress: () => { /* Do something. */ },
+              },
+            });
+            order.paymentStatus="done";
+            order.paymentId=1;
+            order.paymentMode="Credit Card";
+            if(order.totalWeight!==undefined){
+              order.weight=order.totalWeight;
+          }
+          if(order.totalSize!==undefined){
+              order.size=order.totalSize;
+          }
+            updateOrderStatus(order).then((response)=>{
+              navigation.navigate('Orders');
+            })  
+            .catch((err)=>{
+                if(err.response){
+                    console.log(err.response);
+                }
+                else if(err.request){
+                    console.log(err.request);
+                }
+                else {
+                    console.log(err);
+                }
+            });
+                })
+            .catch((err)=>{
+                if(err.response){
+                    console.log(err.response);
+                }
+                else if(err.request){
+                    console.log(err.request);
+                }
+                else {
+                    console.log(err);
+                }
+            });
+      }
+      else{
+        order.paymentStatus="done";
+        if(order.totalWeight!==undefined){
+              order.weight=order.totalWeight;
+          }
+          if(order.totalSize!==undefined){
+              order.size=order.totalSize;
+          }
+          order.paymentId=2;
+          order.paymentMode="CashOnDelivery";
+            updateOrderStatus(order).then((response)=>{
+              Snackbar.show({
+                text: "Payment Method Selected Successfully.",
+                duration: Snackbar.LENGTH_SHORT,
+                action: {
+                  text: 'close',
+                  textColor: 'green',
+                  onPress: () => { /* Do something. */ },
+                },
+              });
+              navigation.navigate('Orders');
+            })  
+            .catch((err)=>{
+                if(err.response){
+                    console.log(err.response);
+                }
+                else if(err.request){
+                    console.log(err.request);
+                }
+                else {
+                    console.log(err);
+                }
+            });
+      }
+      
 
     }
     
@@ -75,7 +127,8 @@ export default function Payment({navigation}) {
         value={true}
         status={agree === true ? 'checked' : 'unchecked'}
         onPress={() => {
-          setAgree(false)
+          setAgree(true)
+          setAgreeB(false)
         }}/>
         <Text>Cash On Delivery</Text></View>
       <View style={tailwind`flex-row items-center`}>
@@ -84,7 +137,7 @@ export default function Payment({navigation}) {
         status={agreeB === true ? 'checked' : 'unchecked'}
         onPress={() => {
           setAgreeB(true)
-          
+          setAgree(false)
         }}
         />
         <Text>Online Payment</Text>

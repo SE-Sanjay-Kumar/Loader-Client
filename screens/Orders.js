@@ -79,7 +79,7 @@ export default Orders = ({navigation}) =>{
                             <Button mode="outlined" style={{marginLeft:10}} onPress={() => {review(order)}}>
                             <Text>Review</Text>                            
                         </Button>):null}
-                        {order.status.statusId==3 ? (
+                        {order.status.statusId==3&&order.paymentStatus!="done" ? (
                             <Button mode="outlined" style={{marginLeft:10}} onPress={() => {pay(order)}}>
                             <Text>Pay</Text>                            
                         </Button>):null}

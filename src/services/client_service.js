@@ -167,12 +167,20 @@ export const getAllVehicles=async ()=>{
 }
 
 export const updateOrderStatus=async (Data)=> {
+   var pickup="";
+   var dropoff="";
    
-    const pickup=Data.pickuplatitude+","+Data.pickuplongitude;
-    const dropoff=Data.dropOffLatitude+","+Data.dropOffLongitude;
+    if(Data.pickuplatitude!==undefined){
+       pickup=Data.pickuplatitude+","+Data.pickuplongitude;
+       dropoff=Data.dropOffLatitude+","+Data.dropOffLongitude;
+
+   }
+   else{
+    pickup=Data.pickUp;
+    dropoff=Data.dropOff;
+   }
     Data.size=parseInt(Data.size);
     Data.weight=parseInt(Data.weight);
-    console.log(Data)
     let data={
         "orderId": Data.orderId,
         "orderName": Data.orderName,
@@ -182,8 +190,8 @@ export const updateOrderStatus=async (Data)=> {
         "paymentStatus": Data.paymentStatus,
         "fragility": false,
         "status": {
-            "statusId": Data.statusId,
-            "status": Data.status
+            "statusId": Data.status.statusId||Data.statusId,
+            "status": Data.status.status||Data.status
         },
         "price": Data.price,
         "client": {
@@ -229,14 +237,16 @@ export const updateOrderStatus=async (Data)=> {
             }
         },
         "payment": {
-            "paymentId": 1,
-            "paymentMode": "Credit Card"
+            "paymentId": Data.paymentId,
+            "paymentMode": Data.paymentMode
         },
         "pickUp": pickup,
         "dropOff": dropoff,
         "estimatedArrivalOfGoods": null,
-        "schedule": Data.date
+        "schedule": Data.schedule||null
     }
+
+    console.log("Value Of Data: "+JSON.stringify(data)+"Ends Here")
     const response=myAxios.put(`api/orders/${Data.orderId}`,data);
     return response;
 }
@@ -249,8 +259,8 @@ export const getOrder=async (id)=>{
 export const placeOrder=async (Data) => {
     const pickup=Data.pickuplatitude+","+Data.pickuplongitude;
     const dropoff=Data.dropOffLatitude+","+Data.dropOffLongitude;
-    Data.size=parseInt(Data.size);
-    Data.weight=parseInt(Data.weight);
+    Data.size=parseFloat(Data.size);
+    Data.weight=parseFloat(Data.weight);
     const data={
         "orderName": Data.ordername,
         "noOfLabors": Data.labour,
