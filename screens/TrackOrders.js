@@ -6,6 +6,7 @@ import tailwind from "twrnc";
 import MapView, { Marker } from 'react-native-maps';
 import { getDriver } from "../src/services/client_service";
 import { Component } from 'react';
+import { ScrollView } from "react-native-gesture-handler";
 
 
 export default Orders = ({navigation}) =>{
@@ -16,6 +17,7 @@ export default Orders = ({navigation}) =>{
     const [driver,setDriver]=React.useState();
     const [refreshing, setRefreshing] = React.useState(false);
 
+    
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
         setTimeout(() => {
@@ -58,12 +60,12 @@ export default Orders = ({navigation}) =>{
 
 
     return(
+                <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }>
         <View style={tailwind`bg-pink-200 h-full`}>
             <View style={tailwind`h-1/3`}>
                 <View style={tailwind`flex-row items-center mb-5`}>
-                <ScrollView refreshControl={
-                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }></ScrollView>
+                    
                     <TouchableOpacity style={tailwind`flex-0.1 `} onPress={() => navigation.openDrawer()} >
                         <Image source={require('../screens/pictures/left.png')}></Image>
                     </TouchableOpacity>
@@ -77,7 +79,7 @@ export default Orders = ({navigation}) =>{
                         label='Order ID'
                         underlineColor="transparent"
                         disabled={true}
-                        value={order.orderId}
+                        value={order.orderId.toString()}
                 />
                 {/* <Button style={tailwind` my-5 mx-15 bg-amber-400 text-black`} mode="contained" onPress={()=>{}}>
                     <Text>Enter</Text>
@@ -122,6 +124,7 @@ export default Orders = ({navigation}) =>{
                     </TextInput>)}
             </View>
         </View>
+        </ScrollView>
     )
 }
 
