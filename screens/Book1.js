@@ -22,20 +22,18 @@ export default Book1 = ({navigation}) =>{
     }
 
     return(
-        <View style={tailwind`bg-violet-300`} >
+        <View style={tailwind`bg-violet-300 h-full`} >
             
-            <View style={tailwind`h-1/2`}>
-                <TouchableOpacity style={tailwind`flex-initial `} >
+            <View style={tailwind`flex-row items-center m-5`}>
+                <TouchableOpacity style={tailwind`flex-1 `} onPress={() => navigation.openDrawer()} >
                     <Image source={require('../screens/pictures/left.png')}></Image>
                 </TouchableOpacity>
-                <Text style={tailwind`text-center text-2xl font-extrabold `}>BOOKING</Text>
-                <Avatar.Image size={150}
-                  style={tailwind`my-10 mx-25 `}
-                  source={require('./pictures/item.jpg')} />
-                <Button style={tailwind` mx-15 bg-amber-400 text-black mb-0`}
-                        mode="contained" onPress={() => { /* Do something. */ }} ><Text style={tailwind`font-bold`}
-                                          >Upload Item Image</Text></Button>
+                <View style={{flex:0.4}}></View>
+                <Text style={tailwind`text-center text-2xl font-mono font-extrabold text-sky-900
+                                 mt-5   underline  `}>BOOKING</Text>
             </View>
+
+            
             <Formik
               validationSchema={OrderProcessingSchema}
               initialValues={{ ordername: '', weight: '', size:'' }}
@@ -67,8 +65,9 @@ export default Book1 = ({navigation}) =>{
                       value={values.weight}
                       keyboardType='number-pad'
                       underlineColor='transparent'
-                      style={tailwind`m-5 rounded-2xl rounded-t-2xl text-center`}
+                      style={tailwind`mx-5 mt-5 rounded-2xl rounded-t-2xl text-center`}
                     />
+                    <Text style={tailwind`mt-0 text-red-600 text-center`}>According to Weight in Tons</Text>
                     {errors.weight &&
                       <Text style={styles.error}>{errors.weight}</Text>
                     }
@@ -78,19 +77,17 @@ export default Book1 = ({navigation}) =>{
                       value={values.size}
                       keyboardType='number-pad'
                       underlineColor='transparent'
-                      style={tailwind`m-5 rounded-2xl rounded-t-2xl text-center`}
+                      style={tailwind`mx-5 mt-5 rounded-2xl rounded-t-2xl text-center`}
                     />
+                    <Text style={tailwind`mb-5 text-red-600 text-center`}>According to Length in Ft.</Text>
                     {errors.size &&
                       <Text style={styles.error}>{errors.size}</Text>
                     }
-                    <Button style={tailwind `mx-15 bg-amber-400 text-black mb-2`} mode="contained" onPress={()=>{ToS2(values)}}><Text style={tailwind`font-bold`}>Next</Text></Button>
-                    <Text style={tailwind`font-semibold text-center mb-2 text-gray-500`}>--OR--</Text>
-                    <Button style={tailwind` mx-15 bg-amber-400 text-black mb-0`} mode="contained" onPress={()=>{
-                        navigation.navigate('Login')
-                    }}><Text style={tailwind`font-bold`}>LogOut</Text></Button>
+                    <Button style={tailwind `mx-15 bg-amber-400 text-black mb-2`} mode="contained" onPress={()=>{ToS2(values)}}><Text style={tailwind`font-bold text-black`}>Next</Text></Button>
+                    
                     
                   </View>
-                )
+                ) 
               }
             </Formik>
         </View>

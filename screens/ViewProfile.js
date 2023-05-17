@@ -1,10 +1,10 @@
 import React from "react";
-import {View, StyleSheet, ScrollView, Image} from 'react-native'
+import {View, StyleSheet, ScrollView, Image, TouchableOpacity} from 'react-native'
 import { TextInput, Button, Text, Appbar, Avatar } from 'react-native-paper';
 import tailwind from "twrnc";
 import { getUser,updateUser } from "../src/services/client_service";
 import Snackbar from "react-native-snackbar";
-export default ViewProfile = () =>{
+export default ViewProfile = ({navigation}) =>{
     const [user,setUser]=React.useState(
         {userName: '',
         cnic: '',
@@ -92,7 +92,15 @@ export default ViewProfile = () =>{
     return(
         <View style={tailwind`bg-pink-200`}>
             
-            <ScrollView style={tailwind`h-1/1 bg-violet-300 rounded-t-3xl`}>
+            <ScrollView style={tailwind`h-full bg-violet-300 `}>
+                <View style={tailwind`flex-row items-center my-5`}>
+                    <TouchableOpacity style={tailwind`flex-0.1 `} onPress={() => navigation.openDrawer()} >
+                        <Image source={require('../screens/pictures/left.png')}></Image>
+                    </TouchableOpacity>
+                    <View style={{flex:0.4}}></View>
+                    <Text style={tailwind`text-center text-2xl font-mono font-extrabold text-sky-900
+                                        underline  `}>VIEW PROFILE</Text>
+                </View>
                 <TextInput
                     style={tailwind`mt-2 mx-5 mb-0 rounded-b-2xl rounded-t-2xl text-center`}
                     underlineColor='transparent'
@@ -140,7 +148,7 @@ export default ViewProfile = () =>{
                     label='Confirm Password'
                     onChangeText={(value) => setUser({ ...user, confirmPassword: value })}
                     />
-                <Button style={tailwind`mx-20 bg-amber-400 my-5`} mode="contained" onPress={updateProfile}>Update Profile</Button>
+                <Button style={tailwind`mx-20 bg-amber-400 my-5`} mode="contained" onPress={updateProfile}><Text style={tailwind`text-black`}>Update Profile</Text></Button>
             </ScrollView>
         </View>
     )

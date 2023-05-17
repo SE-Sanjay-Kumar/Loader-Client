@@ -231,7 +231,7 @@ export default Register = ({navigation}) => {
                           onPress={() => {
                             setAgree(true)
                           }}/>
-                      <Text  style={tailwind`font-bold text-sm`}>I agree to terms and conditions</Text>
+                      <Text  style={tailwind`font-bold text-sm text-black`}>I agree to terms and conditions</Text>
                     </View>  
                     
                     <View>

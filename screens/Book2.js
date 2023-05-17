@@ -1,5 +1,5 @@
 import React from "react";
-import {View, StyleSheet, Image} from 'react-native'
+import {View, StyleSheet, Image, TouchableOpacity} from 'react-native'
 import { TextInput, Button, Text, Appbar } from 'react-native-paper';
 import { useRoute } from '@react-navigation/native';
 import tailwind from "twrnc";
@@ -90,6 +90,8 @@ export default Book2 = ({navigation}) =>{
                         styles={{
                             container: {
                               flex: 1,
+                              text: 'black'
+                              
                             },
                             placeholder:{
                                 text: 'black',
@@ -100,16 +102,28 @@ export default Book2 = ({navigation}) =>{
                               marginLeft: 10,
                               marginRight: 10,
                               marginTop: 20,
-                              marginBottom: 20,
+                              text: 'black'
+                              
                             },
                             textInput: {
                               height: 38,
                               color: 'black',
+                              text: 'black',
                               fontSize: 16,
+                            
+                              borderColor: 'black',
+                              
+                            },
+                            listView:{
+                                text: 'black',
+                                marginHorizontal: 10,
+                            
+                                
                             },
                             
                           }}
                           fetchDetails={true}
+                          enablePoweredByContainer={false}
                         placeholder='Search'
                         onPress={async (data, details = null) => {
                             const location = details.geometry.location;
@@ -126,20 +140,27 @@ export default Book2 = ({navigation}) =>{
                         />
             </View>
             <View style={tailwind`h-1/2 bg-violet-300 rounded-t-3xl`}>
-            
+                <View style={tailwind`flex-row`}>
+                    <TouchableOpacity style={tailwind`flex-0.1 `} onPress={() => navigation.openDrawer()} >
+                        <Image source={require('../screens/pictures/left.png')}></Image>
+                    </TouchableOpacity>
+                    <View style={{flex:0.4}}></View>
+                    <Text style={tailwind`text-center text-2xl font-extrabold mt-5 text-sky-900 underline`}>SCHEDULE BOOKING</Text>
+                    
+                </View>       
 
-                <Text style={tailwind`text-center text-2xl font-extrabold m-5`}>Schedule Booking</Text>
+                
                 <TextInput
                     style={tailwind`mt-2 mx-5 mb-0 rounded-b-2xl rounded-t-2xl text-center`}
-                    placeholder="Departure Time"
+                    placeholder="Departure Time (24 hrs)"
                     underlineColor='transparent'
                     keyboardType='number-pad'
                     value={time}
                     onChangeText={setTime}
                 />            
-                <Text style={tailwind`text-center text-2xl font-extrabold m-5`}>Select a Departure date:</Text>
+                <Text style={tailwind`text-center text-2xl font-extrabold m-5 text-sky-900 underline`}>Select a Departure date:</Text>
                 <Button onPress={showDatePicker} >
-                <Text style={tailwind`text-center text-2xl font-extrabold m-5`} >{`${date.toLocaleDateString()}`}</Text>
+                <Text style={tailwind`text-center text-xl font-extrabold m-5 text-black bg-white`} >{`${date.toLocaleDateString()}`}</Text>
                     {show && (
                         <DateTimePicker
                         testID="dateTimePicker"
@@ -152,7 +173,7 @@ export default Book2 = ({navigation}) =>{
                         />
                     )}
                 </Button>
-                <Button style={tailwind` mx-15 bg-amber-400 text-black mt-5`} mode="contained" onPress={()=>{submitDate()}}><Text>Next</Text></Button>
+                <Button style={tailwind` mx-15 bg-amber-400 text-black mt-5`} mode="contained" onPress={()=>{submitDate()}}><Text style={tailwind`text-black`}>Next</Text></Button>
             </View>
         </View>
     )
