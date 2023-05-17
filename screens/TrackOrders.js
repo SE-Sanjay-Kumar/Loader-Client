@@ -116,7 +116,7 @@ export default Orders = ({navigation}) =>{
                 {order.estimatedArrivalOfGoods!=null ? (
                     <TextInput disabled = 'true' 
                     style={tailwind`my-2 mx-10 mb-0 rounded-b-2xl rounded-t-2xl text-center font-bold`} 
-                    value={order.estimatedArrivalOfGoods}>
+                    value={new Date(order.estimatedArrivalOfGoods).toLocaleDateString()}>
                     </TextInput>):(
                     <TextInput disabled = 'true' 
                     style={tailwind`my-2 mx-10 mb-0 rounded-b-2xl rounded-t-2xl text-center font-bold`} 
