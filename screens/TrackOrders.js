@@ -1,39 +1,59 @@
 import React from "react";
-import {View, StyleSheet, Image, TouchableOpacity} from 'react-native'
+import {View, StyleSheet, Image, TouchableOpacity,RefreshControl} from 'react-native'
 import { TextInput, Button, Text, Appbar } from 'react-native-paper';
 import { useRoute } from '@react-navigation/native';
 import tailwind from "twrnc";
 import MapView, { Marker } from 'react-native-maps';
-import Geolocation from 'react-native-geolocation-service';
-import { requestLocationPermission } from '../src/services/location_service';
+import { getDriver } from "../src/services/client_service";
+import { Component } from 'react';
 
 
 export default Orders = ({navigation}) =>{
     const [latitude, setLatitude] = React.useState(0);
     const [longitude, setLongitude] = React.useState(0);
     const route=useRoute();
-    const [data,setData]=React.useState(route.params.data);
+    const [order,setOrder]=React.useState(route.params.order);
+    const [driver,setDriver]=React.useState();
+    const [refreshing, setRefreshing] = React.useState(false);
 
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        setTimeout(() => {
+        setRefreshing(false);
+        }, 2000);
+    }, []);
+    componentDidMount=()=> {
+        this.intervalId = setInterval(() => {
+          this.forceUpdate(); // Refresh the component
+        }, 5000);
+      }
     
-    const updateLocation = (event) => {
-        const { latitude, longitude } = event.nativeEvent.coordinate;
-        setLatitude(latitude);
-        setLongitude(longitude);
-    };
-
+      componentWillUnmount=()=>{
+        clearInterval(this.intervalId); // Clear the interval when the component is unmounted
+      }
+    
     React.useEffect(() => {
-        requestLocationPermission();
-        Geolocation.getCurrentPosition(
-        position => {
-            const { latitude, longitude } = position.coords;
-            setLatitude(latitude);
-            setLongitude(longitude);
-        },
-        error => {
-            console.log(error.code, error.message);
-        },
-        { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000, provider: Geolocation.PROVIDER_GPS },
-        );
+        getDriver(order.driver.id).then((response)=>{
+            setDriver(response.data);
+            arr=response.data.location.split(',');
+            setLatitude(parseFloat(arr[0]));
+            setLongitude(parseFloat(arr[1]));
+
+        })
+    .catch((err)=>{
+        if(err.response){
+            console.log(err.response.data);
+        }
+        else if(err.request){
+            console.log(err.request);
+        }
+        else {
+            console.log(err);
+        }
+        
+    })  
+    console.log(longitude);
+    console.log(latitude); 
     }, []);
 
 
@@ -41,6 +61,9 @@ export default Orders = ({navigation}) =>{
         <View style={tailwind`bg-pink-200 h-full`}>
             <View style={tailwind`h-1/3`}>
                 <View style={tailwind`flex-row items-center mb-5`}>
+                <ScrollView refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }></ScrollView>
                     <TouchableOpacity style={tailwind`flex-0.1 `} onPress={() => navigation.openDrawer()} >
                         <Image source={require('../screens/pictures/left.png')}></Image>
                     </TouchableOpacity>
@@ -54,6 +77,7 @@ export default Orders = ({navigation}) =>{
                         label='Order ID'
                         underlineColor="transparent"
                         disabled={true}
+                        value={order.orderId}
                 />
                 {/* <Button style={tailwind` my-5 mx-15 bg-amber-400 text-black`} mode="contained" onPress={()=>{}}>
                     <Text>Enter</Text>
@@ -62,31 +86,40 @@ export default Orders = ({navigation}) =>{
             <View style={tailwind`h-2/3`}>
                 {/* <Image style={{width:500 , height:300}} 
                 source={require('./pictures/map.png')} /> */}
+            {longitude !== 0 && latitude !== 0 ? (
                 <MapView
-                    style={styles.map}
-                    region={{
+                style={styles.map}
+                region={{
                     latitude: latitude,
                     longitude: longitude,
                     latitudeDelta: 0.00922,
                     longitudeDelta: 0.00912,
-                    }}
-                    onPress={(event) => updateLocation(event)}
+                }}
                 >
-                    <Marker
+                <Marker
                     coordinate={{
-                        latitude: latitude,
-                        longitude: longitude,
+                    latitude: latitude,
+                    longitude: longitude,
                     }}
-                    title={'Marker Title'}
-                    description={'Marker Description'}
-                    />
+                    title={"Marker Title"}
+                    description={"Marker Description"}
+                />
                 </MapView>
+      ) : (
+        <Text>Loading map...</Text>
+      )}
+
                 
                 <Text style={tailwind`text-center font-bold text-lg mt-5`}>Estimated arrival time:</Text>
-                <TextInput disabled = 'true' 
-                style={tailwind`my-2 mx-10 mb-0 rounded-b-2xl rounded-t-2xl text-center font-bold`} 
-                placeholder = "23:35:18">
-                </TextInput>
+                {order.estimatedArrivalOfGoods!=null ? (
+                    <TextInput disabled = 'true' 
+                    style={tailwind`my-2 mx-10 mb-0 rounded-b-2xl rounded-t-2xl text-center font-bold`} 
+                    value={order.estimatedArrivalOfGoods}>
+                    </TextInput>):(
+                    <TextInput disabled = 'true' 
+                    style={tailwind`my-2 mx-10 mb-0 rounded-b-2xl rounded-t-2xl text-center font-bold`} 
+                    value="Not Yet Scheduled">
+                    </TextInput>)}
             </View>
         </View>
     )
@@ -105,6 +138,9 @@ const styles=StyleSheet.create({
         width: 200,
         margin: 10,
         marginLeft: 90
-    }
+    },
+    map: {
+        ...StyleSheet.absoluteFillObject,
+      },
     
 })

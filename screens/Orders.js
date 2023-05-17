@@ -1,5 +1,5 @@
 import React from "react";
-import {View, StyleSheet, TouchableOpacity, Image, ScrollView} from 'react-native'
+import {View, StyleSheet, TouchableOpacity, Image, ScrollView, RefreshControl} from 'react-native'
 import { TextInput, Button, Text, Appbar, DataTable } from 'react-native-paper';
 import tailwind from "twrnc";
 import { getAllOrder } from "../src/services/client_service";
@@ -12,7 +12,15 @@ export default Orders = ({navigation}) =>{
     const id=global.id;
     const [allOrders,setAllOrders]=React.useState([]);
     const [order,setOrder]=React.useState([]);
-    
+    const [refreshing, setRefreshing] = React.useState(false);
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        setTimeout(() => {
+        setRefreshing(false);
+        }, 2000);
+    }, []);
+
     const updatePrice=(order)=>{
         order.clientid=order.client.id;
         order.orderId=order.orderId;
@@ -32,6 +40,7 @@ export default Orders = ({navigation}) =>{
             data: order});
         
     }
+    
     React.useEffect(()=>{
             getAllOrder().then((response)=>{
                         setAllOrders(response.data);
@@ -58,7 +67,10 @@ export default Orders = ({navigation}) =>{
                 <Text style={tailwind`text-center text-2xl font-mono font-extrabold text-sky-900
                                     underline  `}>Orders list</Text>
             </View>
-            <ScrollView>
+            <ScrollView refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }>
+                
                 <DataTable style={tailwind`border-dotted border-black`}>
                     <DataTable.Header style={tailwind`text-center text-lg font-mono font-extrabold text-sky-900
                                     underline pb-0 bg-amber-300`}>

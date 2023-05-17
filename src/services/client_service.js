@@ -146,6 +146,11 @@ export const getReview=async (data)=>{
     const response=myAxios.get(`api/review/order/${data.orderId}/client-review`);
     return response
 }
+
+export const getDriver = async (id) => {
+    const response = await myAxios.get(`api/driver/${id}`);
+    return response;
+};
 export const pay=async (data)=>{
    
     const response=myAxios.post(`api/pay/charge/${data.id}/${data.amount}/${data.description}`);
