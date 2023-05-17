@@ -1,5 +1,5 @@
 import React from "react";
-import {View, StyleSheet, Image, ScrollView} from 'react-native'
+import {View, StyleSheet, Image, ScrollView,TouchableOpacity} from 'react-native'
 import { TextInput, Button, Text, Appbar } from 'react-native-paper';
 import { NavigationContainer, useRoute } from '@react-navigation/native';
 import tailwind from "twrnc";
@@ -88,6 +88,7 @@ export default Book3 = ({navigation}) =>{
                               height: 38,
                               color: 'black',
                               fontSize: 16,
+                              
                             },
                             
                           }}
@@ -109,7 +110,14 @@ export default Book3 = ({navigation}) =>{
             </View>
 
             <View style={tailwind`h-1/2 rounded-t-3xl bg-violet-300`}>
-                <Text style={tailwind`text-center text-xl font-extrabold m-5`}>Add Drop Off Location</Text>
+                <View style={tailwind`flex-row items-center mb-5`}>
+                    <TouchableOpacity style={tailwind`flex-0.1 `} onPress={() => navigation.openDrawer()} >
+                        <Image source={require('../screens/pictures/left.png')}></Image>
+                    </TouchableOpacity>
+                    <View style={{flex:0.4}}></View>
+                    <Text style={tailwind`text-center text-2xl font-mono font-extrabold text-sky-900
+                                        underline  `}>Add DropOff Location</Text>
+                </View>
                 
                 <TextInput
                     style={tailwind`mx-5 mb-2 rounded-2xl rounded-t-2xl text-center  `}

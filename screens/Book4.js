@@ -114,7 +114,7 @@ export default Book2 = ({navigation}) =>{
                 console.log("Deq: "+err);
             }
         });
-        // navigation.navigate("Page 5",{data:orderDetails});
+        navigation.navigate("Page 5",{data:orderDetails});
     }
     const calculatePrice=()=>{
         let lon1="";
@@ -248,36 +248,42 @@ export default Book2 = ({navigation}) =>{
     },[]);
     return(
         <View>
-            <View style={tailwind`h-1/2`}>
-                <Text>Final Order Screen</Text>
-            </View>
-            <View style={tailwind`h-1/2 bg-violet-200 rounded-t-3xl`}>
-                
-                <Text style={tailwind`text-lg font-bold text-center`}>Fare</Text>
+            
+            <View style={tailwind`h-full bg-violet-200`}>
+                <View style={tailwind`flex-row items-center my-5`}>
+                    <TouchableOpacity style={tailwind`flex-0.1 `} onPress={() => navigation.openDrawer()} >
+                        <Image source={require('../screens/pictures/left.png')}></Image>
+                    </TouchableOpacity>
+                    <View style={{flex:0.4}}></View>
+                    <Text style={tailwind`text-center text-2xl font-mono font-extrabold text-sky-900
+                                        underline  `}>FARE</Text>
+                </View>
                 <TextInput
-                      style={tailwind`mb-10 mx-5 mb-0 rounded-b-2xl rounded-t-2xl text-center `}
+                      
                       label='Enter Price'
                       placeholder='Price Suggestion'
                       underlineColor='transparent'
                       keyboardType='number-pad'
                       value={price.toString()}
                       onChangeText={value => setPrice(value)}
+                      style={tailwind`mx-5 mt-10 rounded-2xl rounded-t-2xl text-center`}
                     />
+                    <Text style={tailwind`mt-0 mb-10 text-red-600 text-center`}>According to Weight in Tons</Text>
                     
                     {(orderexist)?(
                         <Button style={tailwind` bg-amber-400 text-black mt-2 mx-10`}  mode="contained" 
                             onPress={()=>{Price(price)}}>
                         <Text>Update Price</Text></Button>):
-                        (<Button style={tailwind` bg-amber-400 text-black mt-2 mx-10`}  mode="contained" 
+                        (<Button style={tailwind` bg-amber-400 text-black my-2 mx-10`}  mode="contained" 
                             onPress={()=>{placeorder(price)}}>
                         <Text>Place Order</Text></Button>)}
                     
                 {
                     allOrders.map((order,index)=>(
                         (orderDetails.orderId!==undefined) ? (
-                            <View style={tailwind`flex-row `}>
+                            <View style={tailwind` `}>
                                 {((order.orderId==orderDetails.orderId)&&originalPrice==price&&order.status.statusId==6)?(
-                                    <Button style={tailwind`  bg-amber-400 text-black mt-2 mx-10`}  mode="contained" 
+                                    <Button style={tailwind`  bg-amber-400 text-black mt-10 mx-10`}  mode="contained" 
                                         onPress={()=>{acceptOrder()}}>
                                     <Text>Accept</Text></Button>
                                 ) : null

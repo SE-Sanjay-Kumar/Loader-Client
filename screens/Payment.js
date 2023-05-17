@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {View, StyleSheet, Image, ScrollView} from 'react-native'
+import {View, StyleSheet, Image, ScrollView, TouchableOpacity} from 'react-native'
 import { TextInput, Button, Text, Appbar, RadioButton } from 'react-native-paper';
 import { NavigationContainer, useRoute } from '@react-navigation/native';
 import tailwind from "twrnc";
@@ -121,7 +121,14 @@ export default function Payment({navigation}) {
     
   return (
     <View style={tailwind`bg-violet-300 h-full`}>
-      <Text style={tailwind`text-center text-3xl font-extrabold m-5`}>Payment Method</Text>
+      <View style={tailwind`flex-row items-center my-5`}>
+                    <TouchableOpacity style={tailwind`flex-0.1 `} onPress={() => navigation.openDrawer()} >
+                        <Image source={require('../screens/pictures/left.png')}></Image>
+                    </TouchableOpacity>
+                    <View style={{flex:0.4}}></View>
+                    <Text style={tailwind`text-center text-2xl font-mono font-extrabold text-sky-900
+                                        underline  `}>PAYMENT METHOD</Text>
+      </View>
       <View style={tailwind`flex-row items-center`}>
         <RadioButton
         value={true}

@@ -13,6 +13,7 @@ import tailwind from 'twrnc';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { login } from '../src/services/client_service';
 import { mainid } from '../App';
+import { responsiveWidth, responsiveHeight } from 'react-native-responsive-dimensions';
 
 export default Login = ({ navigation }) => {
   // const theme = useTheme();
@@ -42,7 +43,7 @@ export default Login = ({ navigation }) => {
         if (err.response) {
           console.log(err.response);
           Snackbar.show({
-            text: 'Incorrect Password or Email!',
+            text: 'Incorrect Username or Password',
             duration: Snackbar.LENGTH_SHORT,
             action: {
               text: 'close',
@@ -53,7 +54,7 @@ export default Login = ({ navigation }) => {
           console.log("Error Response"+err.response.data.msg);
         } else if (err.request) {
           Snackbar.show({
-            text: 'Incorrect Password or Email!Else IF ',
+            text: 'Incorrect Username or Password Else IF ',
             duration: Snackbar.LENGTH_SHORT,
             action: {
               text: 'close',
@@ -65,7 +66,7 @@ export default Login = ({ navigation }) => {
           console.log(err.request);
         } else {
           Snackbar.show({
-            text: 'Incorrect Password or Email! Else',
+            text: 'Incorrect Username or Password! Else',
             duration: Snackbar.LENGTH_SHORT,
             action: {
               text: 'close',
@@ -88,7 +89,7 @@ export default Login = ({ navigation }) => {
       <View style={tailwind`bg-pink-200`}>
         <View style={tailwind`h-1/2 `}>
           <Image source={require('../screens/pictures/logo.jpg')}
-            style={tailwind` rounded-full max-h-full max-w-full `}></Image>
+            style={[tailwind``,{resizeMode: "cover", width: responsiveWidth(100), height: responsiveHeight(50)}]}></Image>
         </View>
         <View style={tailwind`h-1/2 bg-violet-500 rounded-t-3xl`}>
           <Formik
@@ -131,13 +132,13 @@ export default Login = ({ navigation }) => {
                       <Button style={tailwind`mt-5 mx-15 bg-amber-400 text-black`} mode='contained'
                         onPress={() => {loginfunc(values)}}
                         disabled={!isValid}
-                      ><Text style={tailwind`font-bold`}>Log In</Text></Button>
-                      <Text style={tailwind`font-semibold text-gray-500 text-center my-5`}>Don't have an account?</Text>
+                      ><Text style={tailwind`font-bold text-black`}>Log In</Text></Button>
+                      <Text style={tailwind`font-semibold text-white text-center my-5`}>Don't have an account?</Text>
                       <Button
                         style={tailwind` mx-15 bg-amber-400 text-black`}
                         mode='contained'
                         onPress={handleRegister}
-                      ><Text style={tailwind`font-bold`}>Register</Text></Button>
+                      ><Text style={tailwind`font-bold text-black`}>Register</Text></Button>
                     </View>
                   </View>
                 )

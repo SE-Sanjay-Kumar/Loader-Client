@@ -6,6 +6,8 @@ import tailwind from "twrnc";
 import { useRoute } from "@react-navigation/native";
 import { getReview, addReview } from "../src/services/client_service";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { RatingProps } from "react-native-stock-star-rating";
+import { responsiveWidth } from "react-native-responsive-dimensions";
 
 
 export default Review = ({navigation}) =>{
@@ -72,8 +74,7 @@ export default Review = ({navigation}) =>{
     },[]);
     return(
         <View style={tailwind`bg-pink-200 h-full`}>
-            <Text style={tailwind`text-center text-2xl font-mono font-extrabold text-sky-900
-                                    underline pb-0 my-5 `}>Review Our Service</Text>
+            <Text style={tailwind`text-center text-2xl font-mono font-extrabold text-sky-900 underline pb-0 my-5 `}>Review Our Service</Text>
             <TextInput
                     style={tailwind`my-5 mx-10 mb-0 rounded-b-2xl rounded-t-2xl text-center`}
                     underlineColor="transparent"
@@ -89,7 +90,7 @@ export default Review = ({navigation}) =>{
                     onChangeText={value=>setComment(value)}
             />
 
-            <View style={styles.container}>
+            <View style= {[tailwind`flex-row mt-5 ml-20`,{width: responsiveWidth(100)}]}>
                 {stars.map((star) => (
                     <TouchableOpacity key={star} onPress={() => setRating(star)}>
                     <View style={styles.star}>
